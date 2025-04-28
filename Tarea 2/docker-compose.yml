@@ -22,3 +22,10 @@ services:
       - "5003:5000"
     restart: always
     hostname: usuarios
+  notificaciones:
+    build: notificaciones/.
+    container_name: notificaciones
+    ports:
+      - "5004:5000"
+    restart: always
+    hostname: notificaciones
