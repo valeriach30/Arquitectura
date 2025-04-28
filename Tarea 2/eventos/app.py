@@ -5,7 +5,7 @@ from marshmallow import Schema, fields, ValidationError
 from flasgger import Swagger
 import logging
 
-DATA_FILE = "eventos.json"
+DATA_FILE = "events.json"
 
 # ---------------------------- Logging ----------------------------
 

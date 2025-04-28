@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  entradas:
+    build: entradas/.
+    container_name: entradas
+    ports:
+      - "5001:5000"
+    restart: always
+    hostname: entradas
   eventos:
     build: eventos/.
     container_name: eventos
