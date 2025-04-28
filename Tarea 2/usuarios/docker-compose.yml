@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  usuarios:
+    build: .
+    container_name: usuarios
+    ports:
+      - "5003:5000"
+    restart: always
+    hostname: usuarios
