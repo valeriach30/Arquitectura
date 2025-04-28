@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "organizerId": 1,
+    "name": "Tech Conference 2025",
+    "date": "2025-05-15T09:00:00",
+    "location": "San Francisco, CA",
+    "description": "A conference for tech enthusiasts to discuss the latest trends.",
+    "capacity": 500
+  },
+  {
+    "id": 2,
+    "organizerId": 3,
+    "name": "Music Festival",
+    "date": "2025-06-20T18:00:00",
+    "location": "Austin, TX",
+    "description": "A weekend of live music performances from top artists.",
+    "capacity": 1000
+  },
+  {
+    "id": 3,
+    "organizerId": 5,
+    "name": "Art Exhibition",
+    "date": "2025-07-10T10:00:00",
+    "location": "New York, NY",
+    "description": "An exhibition showcasing modern art from around the world.",
+    "capacity": 300
+  },
+  {
+    "id": 4,
+    "organizerId": 5,
+    "name": "Startup Pitch Night",
+    "date": "2025-08-05T19:00:00",
+    "location": "Seattle, WA",
+    "description": "An event for startups to pitch their ideas to investors.",
+    "capacity": 200
+  },
+  {
+    "id": 5,
+    "organizerId": 3,
+    "name": "Cooking Workshop",
+    "date": "2025-09-12T14:00:00",
+    "location": "Chicago, IL",
+    "description": "A hands-on workshop to learn cooking techniques from top chefs.",
+    "capacity": 50
+  }
+]
