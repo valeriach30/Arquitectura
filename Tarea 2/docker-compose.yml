@@ -29,3 +29,10 @@ services:
       - "5004:5000"
     restart: always
     hostname: notificaciones
+  facturacion:
+    build: facturacion/.
+    container_name: facturacion
+    ports:
+      - "5005:5000"
+    restart: always
+    hostname: facturacion
