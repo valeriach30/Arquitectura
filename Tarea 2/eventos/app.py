@@ -4,12 +4,15 @@ from flask import Flask, jsonify, request
 from marshmallow import Schema, fields, ValidationError
 from flasgger import Swagger
 import logging
+import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv("config.env")
 
 DATA_FILE = "events.json"
 
-# ---------------------------- Logging ----------------------------
-
-logging.basicConfig(level=logging.INFO)
+# ---------------------------- Flask App ---------------------------
 
 app = Flask(__name__)
 swagger = Swagger(app, template={
@@ -20,7 +23,12 @@ swagger = Swagger(app, template={
     }
 })
 
+# ---------------------------- Logging ----------------------------
+
+logging.basicConfig(level=logging.INFO)
+
 #  ---------------------------- Schema ----------------------------
+
 class EventsSchema(Schema):
     organizerId = fields.Integer(required=True)
     name = fields.String(required=True)
@@ -147,14 +155,27 @@ def add_event():
         description: Invalid input
     """
 
+    # Validate the request data
     try:
         data = events_schema.load(request.get_json())
     except ValidationError as err:
-        app.logger.info("Invalid event data: %s", err.messages)
         return jsonify(err.messages), 400
 
-    app.logger.info("Adding new event: %s", data)
+    # Check if the user is an organizer
+    organizer_id = data["organizerId"]
+    users_service = os.getenv("USUARIOS_SERVICE")
 
+    try:
+        response = requests.get(f"{users_service}/users/{organizer_id}/is_organizer")
+        if response.status_code == 404:
+            return jsonify({"error": "User not found"}), 404
+        if not response.json():  # If the response is `false`
+            return jsonify({"error": "User is not an organizer"}), 400
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": "Unable to verify organizer"}), 500
+
+    # Load existing events and add the new event
     events = load_events()
     new_event = {
         "id": events[-1]["id"] + 1 if events else 1,
@@ -208,6 +229,20 @@ def update_event(event_id):
     except ValidationError as err:
         app.logger.info("Invalid event data: %s", err.messages)
         return jsonify(err.messages), 400
+
+    # Check if the user is an organizer
+    organizer_id = data["organizerId"]
+    users_service = os.getenv("USUARIOS_SERVICE")
+
+    try:
+      response = requests.get(f"{users_service}/users/{organizer_id}/is_organizer")
+      if response.status_code == 404:
+          return jsonify({"error": "User not found"}), 404
+      if not response.json():  # If the response is `false`
+          return jsonify({"error": "User is not an organizer"}), 400
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": "Unable to verify organizer"}), 500
 
     for event in events:
         if event["id"] == event_id:

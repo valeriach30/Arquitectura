@@ -7,9 +7,7 @@ import logging
 
 DATA_FILE = "bills.json"
 
-# ---------------------------- Logging ----------------------------
-
-logging.basicConfig(level=logging.INFO)
+# ---------------------------- Flask App ---------------------------
 
 app = Flask(__name__)
 swagger = Swagger(app, template={
@@ -19,6 +17,10 @@ swagger = Swagger(app, template={
         "description": "This is a simple API to manage bills with JSON file persistence.",
     }
 })
+
+# ---------------------------- Logging ----------------------------
+
+logging.basicConfig(level=logging.INFO)
 
 # ---------------------------- Schema ----------------------------
 class BillsSchema(Schema):

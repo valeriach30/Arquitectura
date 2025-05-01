@@ -15,6 +15,8 @@ services:
       - "5002:5000"
     restart: always
     hostname: eventos
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
   usuarios:
     build: usuarios/.
     container_name: usuarios

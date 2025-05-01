@@ -7,9 +7,7 @@ import logging
 
 DATA_FILE = "users.json"
 
-# ---------------------------- Logging ----------------------------
-
-logging.basicConfig(level=logging.INFO)
+# ---------------------------- Flask App ---------------------------
 
 app = Flask(__name__)
 swagger = Swagger(app, template={
@@ -19,6 +17,10 @@ swagger = Swagger(app, template={
         "description": "This is a simple API to manage users with JSON file persistence.",
     }
 })
+
+# ---------------------------- Logging ----------------------------
+
+logging.basicConfig(level=logging.INFO)
 
 #  ---------------------------- Schema ----------------------------
 class UsersSchema(Schema):
@@ -226,6 +228,34 @@ def delete_user(user_id):
     users = [user for user in users if user["id"] != user_id]
     save_users(users)
     return "", 204
+
+# >>>>>>>>>>>>>> Check if user is organizer <<<<<<<<<<<<
+@app.route('/users/<int:user_id>/is_organizer', methods=['GET'])
+def is_user_organizer(user_id):
+    """
+    Check if a user is an organizer
+    ---
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+    responses:
+      200:
+        description: User organizer status
+        schema:
+          type: boolean
+      404:
+        description: User not found
+    """
+    user = find_user(user_id)
+
+    if user:
+        app.logger.info("User with id %d isOrganizer: %s", user_id, user["isOrganizer"])
+        return jsonify(user["isOrganizer"]), 200
+
+    app.logger.info("User with id %d not found", user_id)
+    return jsonify({"error": "User not found"}), 404
 
 # ------------------------------ Main -----------------------------
 if __name__ == '__main__':
