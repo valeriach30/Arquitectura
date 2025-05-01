@@ -4,8 +4,14 @@ from flask import Flask, jsonify, request
 from marshmallow import Schema, fields, ValidationError
 from flasgger import Swagger
 import logging
+import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv("config.env")
 
 DATA_FILE = "notifications.json"
+USERS_SERVICE = os.getenv("USUARIOS_SERVICE")
 
 # ---------------------------- Flask App ---------------------------
 
@@ -154,6 +160,14 @@ def add_notification():
         app.logger.info("Invalid notification data: %s", err.messages)
         return jsonify(err.messages), 400
 
+    # Validate users
+    for user in data["users"]:
+        user_id = user["id"]
+        response = requests.get(f"{USERS_SERVICE}/users/{user_id}")
+        if response.status_code != 200:
+            app.logger.info("User with id %d not found", user_id)
+            return jsonify({"error": f"User with id {user_id} not found"}), 404
+
     app.logger.info("Adding new notification: %s", data)
 
     notifications = load_notifications()
@@ -210,6 +224,14 @@ def update_notification(notification_id):
     except ValidationError as err:
         app.logger.info("Invalid notification data: %s", err.messages)
         return jsonify(err.messages), 400
+
+    # Validate users
+    for user in data["users"]:
+        user_id = user["id"]
+        response = requests.get(f"{USERS_SERVICE}/users/{user_id}")
+        if response.status_code != 200:
+            app.logger.info("User with id %d not found", user_id)
+            return jsonify({"error": f"User with id {user_id} not found"}), 404
 
     for notification in notifications:
         if notification["id"] == notification_id:

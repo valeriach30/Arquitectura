@@ -34,6 +34,8 @@ services:
       - "5004:5000"
     restart: always
     hostname: notificaciones
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
   facturacion:
     build: facturacion/.
     container_name: facturacion
