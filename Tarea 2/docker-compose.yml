@@ -8,6 +8,9 @@ services:
       - "5001:5000"
     restart: always
     hostname: entradas
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
+      "EVENTOS_SERVICE": http://eventos:5000
   eventos:
     build: eventos/.
     container_name: eventos

@@ -4,8 +4,15 @@ from flask import Flask, jsonify, request
 from marshmallow import Schema, fields, ValidationError
 from flasgger import Swagger
 import logging
+import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv("config.env")
 
 DATA_FILE = "tickets.json"
+USERS_SERVICE = os.getenv("USUARIOS_SERVICE")
+EVENTS_SERVICE = os.getenv("EVENTOS_SERVICE")
 
 # ---------------------------- Flask App ---------------------------
 
@@ -149,6 +156,17 @@ def add_ticket():
         app.logger.info("Invalid ticket data: %s", err.messages)
         return jsonify(err.messages), 400
 
+    # Validate buyerId
+    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['buyerId']}")
+    if buyer_response.status_code != 200:
+        return jsonify({"error": "Buyer not found"}), 404
+
+    # Validate eventId
+    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    if event_response.status_code != 200:
+        return jsonify({"error": "Event not found"}), 404
+
+
     app.logger.info("Adding new ticket: %s", data)
 
     tickets = load_tickets()
@@ -195,13 +213,24 @@ def update_ticket(ticket_id):
       404:
         description: Ticket not found
     """
-    tickets = load_tickets()
-
+    # Validate request data
     try:
         data = tickets_schema.load(request.get_json())
     except ValidationError as err:
         app.logger.info("Invalid ticket data: %s", err.messages)
         return jsonify(err.messages), 400
+
+    # Validate buyerId
+    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['buyerId']}")
+    if buyer_response.status_code != 200:
+        return jsonify({"error": "Buyer not found"}), 404
+
+    # Validate eventId
+    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    if event_response.status_code != 200:
+        return jsonify({"error": "Event not found"}), 404
+
+    tickets = load_tickets()
 
     for ticket in tickets:
         if ticket["id"] == ticket_id:

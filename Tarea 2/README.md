@@ -1,4 +1,7 @@
 ```mermaid
 graph TD
-    G["Eventos (Python)"] -->|determine if user is organizer| H["Usuarios (Python)"]
+    G["Eventos (Python)"] -->|verifica id organizador| H["Usuarios (Python)"]
+    I -->|verifica id evento| G
+    I["Entradas (Python)"] -->| verifica id usuario |H
+
 ```

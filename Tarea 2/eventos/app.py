@@ -11,6 +11,7 @@ import os
 load_dotenv("config.env")
 
 DATA_FILE = "events.json"
+USERS_SERVICE = os.getenv("USUARIOS_SERVICE")
 
 # ---------------------------- Flask App ---------------------------
 
@@ -163,10 +164,9 @@ def add_event():
 
     # Check if the user is an organizer
     organizer_id = data["organizerId"]
-    users_service = os.getenv("USUARIOS_SERVICE")
 
     try:
-        response = requests.get(f"{users_service}/users/{organizer_id}/is_organizer")
+        response = requests.get(f"{USERS_SERVICE}/users/{organizer_id}/is_organizer")
         if response.status_code == 404:
             return jsonify({"error": "User not found"}), 404
         if not response.json():  # If the response is `false`
@@ -232,10 +232,9 @@ def update_event(event_id):
 
     # Check if the user is an organizer
     organizer_id = data["organizerId"]
-    users_service = os.getenv("USUARIOS_SERVICE")
 
     try:
-      response = requests.get(f"{users_service}/users/{organizer_id}/is_organizer")
+      response = requests.get(f"{USERS_SERVICE}/users/{organizer_id}/is_organizer")
       if response.status_code == 404:
           return jsonify({"error": "User not found"}), 404
       if not response.json():  # If the response is `false`
