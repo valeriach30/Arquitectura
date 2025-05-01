@@ -67,7 +67,7 @@ Este proyecto implementa una arquitectura de microservicios utilizando Docker. C
 
 - Gestionar notificaciones.
 
-\***\*API REST:\*\***
+**API REST:**
 
 - `GET /notifications`: Obtiene todas las notificaciones.
 - `GET /notifications/<id>`: Obtiene una notificación por ID.
@@ -117,8 +117,8 @@ docker ps
 
 5. Acceder a las APIS
 
-- Usuarios: http://localhost:5000
-- Eventos: http://localhost:5001
-- Entradas: http://localhost:5002
-- Facturación: http://localhost:5003
-- Notificaciones: http://localhost:5004
+- Usuarios: http://localhost:5000/apidocs
+- Eventos: http://localhost:5001/apidocs
+- Entradas: http://localhost:5002/apidocs
+- Facturación: http://localhost:5003/apidocs
+- Notificaciones: http://localhost:5004/apidocs
