@@ -94,7 +94,7 @@ graph TD
 
 ```
 git clone https://github.com/valeriach30/Arquitectura.git
-cd Tarea 2
+cd 'Tarea 2'
 ```
 
 2. Construir los Contenedores:
@@ -117,8 +117,8 @@ docker ps
 
 5. Acceder a las APIS
 
-- Usuarios: http://localhost:5000/apidocs
-- Eventos: http://localhost:5001/apidocs
-- Entradas: http://localhost:5002/apidocs
-- Facturación: http://localhost:5003/apidocs
+- Entradas: http://localhost:5001/apidocs
+- Eventos: http://localhost:5002/apidocs
+- Usuarios: http://localhost:5003/apidocs
 - Notificaciones: http://localhost:5004/apidocs
+- Facturación: http://localhost:5005/apidocs
