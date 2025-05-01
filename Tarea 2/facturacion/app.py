@@ -4,8 +4,15 @@ from flask import Flask, jsonify, request
 from marshmallow import Schema, fields, ValidationError
 from flasgger import Swagger
 import logging
+import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv("config.env")
 
 DATA_FILE = "bills.json"
+USERS_SERVICE = os.getenv("USUARIOS_SERVICE")
+EVENTS_SERVICE = os.getenv("EVENTOS_SERVICE")
 
 # ---------------------------- Flask App ---------------------------
 
@@ -149,6 +156,16 @@ def add_bill():
         app.logger.info("Invalid bill data: %s", err.messages)
         return jsonify(err.messages), 400
 
+    # Validate userId
+    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['userId']}")
+    if buyer_response.status_code != 200:
+        return jsonify({"error": "User not found"}), 404
+
+    # Validate eventId
+    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    if event_response.status_code != 200:
+        return jsonify({"error": "Event not found"}), 404
+
     app.logger.info("Adding new bill: %s", data)
 
     bills = load_bills()
@@ -195,13 +212,24 @@ def update_bill(bill_id):
       404:
         description: Bill not found
     """
-    bills = load_bills()
 
     try:
         data = bills_schema.load(request.get_json())
     except ValidationError as err:
         app.logger.info("Invalid Bill data: %s", err.messages)
         return jsonify(err.messages), 400
+
+    # Validate userId
+    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['userId']}")
+    if buyer_response.status_code != 200:
+        return jsonify({"error": "User not found"}), 404
+
+    # Validate eventId
+    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    if event_response.status_code != 200:
+        return jsonify({"error": "Event not found"}), 404
+
+    bills = load_bills()
 
     for bill in bills:
         if bill["id"] == bill_id:

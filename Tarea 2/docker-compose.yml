@@ -41,3 +41,6 @@ services:
       - "5005:5000"
     restart: always
     hostname: facturacion
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
+      "EVENTOS_SERVICE": http://eventos:5000
