@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # RabbitMQ messaging
+      - "15672:15672" # RabbitMQ management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    hostname: rabbitmq
+
+  notification-sender:
+    build: notification-sender/.
+    container_name: notification-sender
+    ports:
+      - "5000:5000"
+    restart: always
+    hostname: python
+    environment:
+      "RABBITMQ_HOST": "rabbitmq"
+    depends_on:
+      - rabbitmq
+
+  notification-auto-sender:
+    build: notification-auto-sender/.
+    container_name: notification-auto-sender
+    command: ["python", "auto_sender.py"]
+    restart: always
+    hostname: python
+    environment:
+      "RABBITMQ_HOST": "rabbitmq"
+    depends_on:
+      - rabbitmq
+
+  notification-consumer:
+    build: notification-receiver/.
+    container_name: notification-consumer
+    command: ["python", "consumer.py"]
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_HOST: rabbitmq
