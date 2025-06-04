@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  usuarios:
+    build: usuarios/.
+    container_name: usuarios
+    ports:
+      - "5003:5000"
+    restart: always
+    hostname: usuarios
+  notificaciones:
+    build: notificaciones/.
+    container_name: notificaciones
+    ports:
+      - "5004:5000"
+    restart: always
+    hostname: notificaciones
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
