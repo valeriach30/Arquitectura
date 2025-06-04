@@ -1,13 +1,1 @@
-[
-  {
-    "id": 1,
-    "users": [
-      {
-        "id": 1
-      }
-    ],
-    "type": "info",
-    "content": "Test message",
-    "status": "sent"
-  }
-]
+[]
