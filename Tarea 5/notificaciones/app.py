@@ -183,7 +183,12 @@ def add_notification():
     # Validate users
     for user in data["users"]:
         user_id = user["id"]
-        response = requests.get(f"{USERS_SERVICE}/users/{user_id}")
+        app.logger.info("Calling users service to validate user %d with correlation_id: %s",
+                        user_id, g.correlation_id)
+        response = requests.get(
+            f"{USERS_SERVICE}/users/{user_id}",
+            headers={CORRELATION_ID_HEADER: g.correlation_id}
+        )
         if response.status_code != 200:
             app.logger.info("User with id %d not found", user_id)
             return jsonify({"error": f"User with id {user_id} not found"}), 404
@@ -248,7 +253,12 @@ def update_notification(notification_id):
     # Validate users
     for user in data["users"]:
         user_id = user["id"]
-        response = requests.get(f"{USERS_SERVICE}/users/{user_id}")
+        app.logger.info("Calling users service to validate user %d with correlation_id: %s",
+                        user_id, g.correlation_id)
+        response = requests.get(
+            f"{USERS_SERVICE}/users/{user_id}",
+            headers={CORRELATION_ID_HEADER: g.correlation_id}
+        )
         if response.status_code != 200:
             app.logger.info("User with id %d not found", user_id)
             return jsonify({"error": f"User with id {user_id} not found"}), 404

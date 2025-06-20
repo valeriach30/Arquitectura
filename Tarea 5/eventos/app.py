@@ -260,9 +260,16 @@ def update_event(event_id):
 
     # Check if the user is an organizer
     organizer_id = data["organizerId"]
+    app.logger.info("Calling users service to verify organizer %d with correlation_id: %s",
+                    organizer_id, g.correlation_id)
 
     try:
-      response = requests.get(f"{USERS_SERVICE}/users/{organizer_id}/is_organizer")
+      response = requests.get(
+          f"{USERS_SERVICE}/users/{organizer_id}/is_organizer",
+          headers={CORRELATION_ID_HEADER: g.correlation_id}
+      )
+      app.logger.info("Users service response for organizer %d: status=%d, correlation_id: %s",
+                      organizer_id, response.status_code, g.correlation_id)
       if response.status_code == 404:
           return jsonify({"error": "User not found"}), 404
       if not response.json():  # If the response is `false`

@@ -123,8 +123,14 @@ docker ps
 - Notificaciones: http://localhost:5004/apidocs
 - Facturación: http://localhost:5005/apidocs
 
-6. Ver los logs con los correlation ids
+# ✅ Cómo probar el funcionamiento de los Correlation IDs
+
+1. Iniciar los logs del sistema
 
 ```
 docker compose logs -f
 ```
+
+2. Ir a http://localhost:5001/apidocs (u otra página)
+3. Utilizar Swagger para agregar una nueva entrada (por ejemplo, evento, factura, notificación o usuario).
+4. Observar cómo aparece un correlation ID único asociado a la solicitud. 

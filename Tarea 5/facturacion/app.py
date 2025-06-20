@@ -176,12 +176,22 @@ def add_bill():
         return jsonify(err.messages), 400
 
     # Validate userId
-    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['userId']}")
+    app.logger.info("Calling users service to validate user %d with correlation_id: %s",
+                    data['userId'], g.correlation_id)
+    buyer_response = requests.get(
+        f"{USERS_SERVICE}/users/{data['userId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
     if buyer_response.status_code != 200:
         return jsonify({"error": "User not found"}), 404
 
     # Validate eventId
-    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    app.logger.info("Calling events service to validate event %d with correlation_id: %s",
+                    data['eventId'], g.correlation_id)
+    event_response = requests.get(
+        f"{EVENTS_SERVICE}/events/{data['eventId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
     if event_response.status_code != 200:
         return jsonify({"error": "Event not found"}), 404
 
@@ -239,12 +249,22 @@ def update_bill(bill_id):
         return jsonify(err.messages), 400
 
     # Validate userId
-    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['userId']}")
+    app.logger.info("Calling users service to validate user %d with correlation_id: %s",
+                    data['userId'], g.correlation_id)
+    buyer_response = requests.get(
+        f"{USERS_SERVICE}/users/{data['userId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
     if buyer_response.status_code != 200:
         return jsonify({"error": "User not found"}), 404
 
     # Validate eventId
-    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    app.logger.info("Calling events service to validate event %d with correlation_id: %s",
+                    data['eventId'], g.correlation_id)
+    event_response = requests.get(
+        f"{EVENTS_SERVICE}/events/{data['eventId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
     if event_response.status_code != 200:
         return jsonify({"error": "Event not found"}), 404
 
