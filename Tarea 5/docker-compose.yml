@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  entradas:
+    build: entradas/.
+    container_name: entradas
+    ports:
+      - "5001:5000"
+    restart: always
+    hostname: entradas
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
+      "EVENTOS_SERVICE": http://eventos:5000
+  eventos:
+    build: eventos/.
+    container_name: eventos
+    ports:
+      - "5002:5000"
+    restart: always
+    hostname: eventos
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
+  usuarios:
+    build: usuarios/.
+    container_name: usuarios
+    ports:
+      - "5003:5000"
+    restart: always
+    hostname: usuarios
+  notificaciones:
+    build: notificaciones/.
+    container_name: notificaciones
+    ports:
+      - "5004:5000"
+    restart: always
+    hostname: notificaciones
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
+  facturacion:
+    build: facturacion/.
+    container_name: facturacion
+    ports:
+      - "5005:5000"
+    restart: always
+    hostname: facturacion
+    environment:
+      "USUARIOS_SERVICE": http://usuarios:5000
+      "EVENTOS_SERVICE": http://eventos:5000

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "buyerId": 2,
+    "eventId": 1,
+    "type": "VIP",
+    "price": 150,
+    "status": "confirmed"
+  },
+  {
+    "id": 2,
+    "buyerId": 2,
+    "eventId": 2,
+    "type": "General",
+    "price": 50,
+    "status": "pending"
+  },
+  {
+    "id": 3,
+    "buyerId": 4,
+    "eventId": 3,
+    "type": "VIP",
+    "price": 200,
+    "status": "confirmed"
+  },
+  {
+    "id": 4,
+    "buyerId": 4,
+    "eventId": 4,
+    "type": "General",
+    "price": 75,
+    "status": "cancelled"
+  },
+  {
+    "id": 5,
+    "buyerId": 6,
+    "eventId": 5,
+    "type": "VIP",
+    "price": 180,
+    "status": "confirmed"
+  }
+]

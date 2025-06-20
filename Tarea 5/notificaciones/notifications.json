@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "users": [
+      {
+        "id": 1
+      }
+    ],
+    "type": "info",
+    "content": "Your event has been updated.",
+    "status": "sent"
+  },
+  {
+    "id": 2,
+    "users": [
+      {
+        "id": 2
+      }
+    ],
+    "type": "warning",
+    "content": "Your payment is pending.",
+    "status": "pending"
+  },
+  {
+    "id": 3,
+    "users": [
+      {
+        "id": 4
+      },
+      {
+        "id": 6
+      }
+    ],
+    "type": "success",
+    "content": "Your ticket has been confirmed.",
+    "status": "sent"
+  },
+  {
+    "id": 4,
+    "users": [
+      {
+        "id": 3
+      }
+    ],
+    "type": "error",
+    "content": "There was an issue with your registration.",
+    "status": "failed"
+  },
+  {
+    "id": 5,
+    "users": [
+      {
+        "id": 1
+      },
+      {
+        "id": 2
+      },
+      {
+        "id": 3
+      }
+    ],
+    "type": "info",
+    "content": "A new event has been added to your favorites.",
+    "status": "sent"
+  }
+]

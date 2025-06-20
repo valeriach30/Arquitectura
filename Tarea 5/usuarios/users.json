@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "phone": "12345678",
+    "isOrganizer": true
+  },
+  {
+    "id": 2,
+    "name": "Bob Smith",
+    "email": "bob.smith@example.com",
+    "phone": "23456789",
+    "isOrganizer": false
+  },
+  {
+    "id": 3,
+    "name": "Carol Davis",
+    "email": "carol.davis@example.com",
+    "phone": "34567890",
+    "isOrganizer": true
+  },
+  {
+    "id": 4,
+    "name": "David Lee",
+    "email": "david.lee@example.com",
+    "phone": "45678901",
+    "isOrganizer": false
+  },
+  {
+    "id": 5,
+    "name": "Eva Martinez",
+    "email": "eva.martinez@example.com",
+    "phone": "56789012",
+    "isOrganizer": true
+  },
+  {
+    "id": 6,
+    "name": "Frank Wilson",
+    "email": "frank.wilson@example.com",
+    "phone": "67890123",
+    "isOrganizer": false
+  }
+]
