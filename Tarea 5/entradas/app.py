@@ -177,12 +177,26 @@ def add_ticket():
         return jsonify(err.messages), 400
 
     # Validate buyerId
-    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['buyerId']}")
+    app.logger.info("Calling users service to validate buyer %d with correlation_id: %s",
+                    data['buyerId'], g.correlation_id)
+    buyer_response = requests.get(
+        f"{USERS_SERVICE}/users/{data['buyerId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
+    app.logger.info("Users service response for buyer %d: status=%d, correlation_id: %s",
+                    data['buyerId'], buyer_response.status_code, g.correlation_id)
     if buyer_response.status_code != 200:
         return jsonify({"error": "Buyer not found"}), 404
 
     # Validate eventId
-    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    app.logger.info("Calling events service to validate event %d with correlation_id: %s",
+                    data['eventId'], g.correlation_id)
+    event_response = requests.get(
+        f"{EVENTS_SERVICE}/events/{data['eventId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
+    app.logger.info("Events service response for event %d: status=%d, correlation_id: %s",
+                    data['eventId'], event_response.status_code, g.correlation_id)
     if event_response.status_code != 200:
         return jsonify({"error": "Event not found"}), 404
 
@@ -241,12 +255,26 @@ def update_ticket(ticket_id):
         return jsonify(err.messages), 400
 
     # Validate buyerId
-    buyer_response = requests.get(f"{USERS_SERVICE}/users/{data['buyerId']}")
+    app.logger.info("Calling users service to validate buyer %d with correlation_id: %s",
+                    data['buyerId'], g.correlation_id)
+    buyer_response = requests.get(
+        f"{USERS_SERVICE}/users/{data['buyerId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
+    app.logger.info("Users service response for buyer %d: status=%d, correlation_id: %s",
+                    data['buyerId'], buyer_response.status_code, g.correlation_id)
     if buyer_response.status_code != 200:
         return jsonify({"error": "Buyer not found"}), 404
 
     # Validate eventId
-    event_response = requests.get(f"{EVENTS_SERVICE}/events/{data['eventId']}")
+    app.logger.info("Calling events service to validate event %d with correlation_id: %s",
+                    data['eventId'], g.correlation_id)
+    event_response = requests.get(
+        f"{EVENTS_SERVICE}/events/{data['eventId']}",
+        headers={CORRELATION_ID_HEADER: g.correlation_id}
+    )
+    app.logger.info("Events service response for event %d: status=%d, correlation_id: %s",
+                    data['eventId'], event_response.status_code, g.correlation_id)
     if event_response.status_code != 200:
         return jsonify({"error": "Event not found"}), 404
 

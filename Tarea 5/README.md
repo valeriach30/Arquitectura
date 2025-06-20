@@ -1,6 +1,6 @@
-# Implementación de APIs REST
+# Implementación de APIs REST con Correlation Ids
 
-Este proyecto implementa una arquitectura de microservicios utilizando Docker. Cada servicio está desarrollado en Python y expone una API REST para gestionar diferentes aspectos del sistema.
+Este proyecto implementa una arquitectura de microservicios utilizando Docker. Cada servicio está desarrollado en Python y expone una API REST para gestionar diferentes aspectos del sistema. También se agregaron correlation ids. 
 
 # 📦 Microservicios
 
@@ -94,7 +94,7 @@ graph TD
 
 ```
 git clone https://github.com/valeriach30/Arquitectura.git
-cd 'Tarea 2'
+cd 'Tarea 5'
 ```
 
 2. Construir los Contenedores:
@@ -122,3 +122,9 @@ docker ps
 - Usuarios: http://localhost:5003/apidocs
 - Notificaciones: http://localhost:5004/apidocs
 - Facturación: http://localhost:5005/apidocs
+
+6. Ver los logs con los correlation ids
+
+```
+docker compose logs -f
+```
