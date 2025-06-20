@@ -132,5 +132,5 @@ docker compose logs -f
 ```
 
 2. Ir a http://localhost:5001/apidocs (u otra página)
-3. Utilizar Swagger para agregar una nueva entrada (por ejemplo, evento, factura, notificación o usuario).
+3. Utilizar Swagger para agregar una nueva entrada (también se puede crear un evento, factura, notificación o usuario).
 4. Observar cómo aparece un correlation ID único asociado a la solicitud. 
