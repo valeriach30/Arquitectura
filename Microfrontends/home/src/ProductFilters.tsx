@@ -26,6 +26,11 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ onFilterChange }) => {
     "Scuderia Ferrari",
     "McLaren F1 Team",
     "Alpine F1 Team",
+    "Aston Martin F1 Team",
+    "MoneyGram Haas F1 Team",
+    "Williams Racing",
+    "Scuderia AlphaTauri",
+    "Formula 1",
   ];
 
   const handleFilterChange = (

@@ -40,6 +40,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     if (team.includes("Mercedes")) return "text-cyan-600";
     if (team.includes("McLaren")) return "text-orange-600";
     if (team.includes("Alpine")) return "text-pink-600";
+    if (team.includes("Aston Martin")) return "text-green-600";
+    if (team.includes("Haas")) return "text-gray-600";
+    if (team.includes("Williams")) return "text-blue-400";
+    if (team.includes("AlphaTauri")) return "text-indigo-600";
+    if (team.includes("Formula 1")) return "text-purple-600";
     return "text-gray-600";
   };
 
