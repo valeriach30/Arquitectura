@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export interface Product {
   id: string;
@@ -16,9 +16,14 @@ export interface Product {
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (product: Product) => void;
+  onViewDetails?: (productId: string) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart,
+  onViewDetails,
+}) => {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "Car":
@@ -48,10 +53,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     return "text-gray-600";
   };
 
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails(product.id);
+    } else {
+      // Default navigation to product microfrontend
+      window.open(`http://localhost:3002?id=${product.id}`, "_blank");
+    }
+  };
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden cursor-pointer group flex flex-col h-full">
       {/* Product Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div
+        className="relative h-48 overflow-hidden flex-shrink-0"
+        onClick={handleViewDetails}
+      >
         <img
           src={product.picture}
           alt={product.name}
@@ -70,7 +86,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         {/* Category & Team */}
         <div className="flex justify-between items-center mb-2">
           <span
@@ -86,7 +102,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         </div>
 
         {/* Product Name */}
-        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+        <h3
+          className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 cursor-pointer hover:text-red-600 transition-colors"
+          onClick={handleViewDetails}
+        >
           {product.name}
         </h3>
 
@@ -97,27 +116,39 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         </p>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
           {product.description}
         </p>
 
-        {/* Price & Actions */}
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-bold text-gray-900">
+        {/* Price & Actions - Always at bottom */}
+        <div className="mt-auto">
+          <div className="text-2xl font-bold text-gray-900 mb-3">
             ${product.price}
           </div>
 
-          <button
-            onClick={() => onAddToCart && onAddToCart(product)}
-            disabled={!product.inStock}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-              product.inStock
-                ? "bg-red-600 hover:bg-red-700 text-white shadow-md hover:shadow-lg"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            }`}
-          >
-            {product.inStock ? "Add to Cart" : "Out of Stock"}
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={handleViewDetails}
+              className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg font-medium transition-colors duration-200"
+            >
+              View Details
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart && onAddToCart(product);
+              }}
+              disabled={!product.inStock}
+              className={`flex-1 px-3 py-2 rounded-lg font-medium transition-colors duration-200 ${
+                product.inStock
+                  ? "bg-red-600 hover:bg-red-700 text-white shadow-md hover:shadow-lg"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              {product.inStock ? "Add to Cart" : "Out of Stock"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
