@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 // @ts-ignore
-import CartService, { Cart } from 'home/CartService';
+import CartService, { Cart } from "home/CartService";
 
 const ProductHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cart, setCart] = useState<Cart>({ items: [], totalItems: 0, totalPrice: 0 });
+  const [cart, setCart] = useState<Cart>({
+    items: [],
+    totalItems: 0,
+    totalPrice: 0,
+  });
   const [cartService] = useState(() => CartService.getInstance());
 
   useEffect(() => {
@@ -21,12 +25,12 @@ const ProductHeader: React.FC = () => {
 
   const handleCartClick = () => {
     // Navigate to cart page in home microfrontend
-    window.location.href = 'http://localhost:3000/cart';
+    window.location.href = "http://localhost:3000/cart";
   };
 
   const handleLogoClick = () => {
     // Navigate to home page
-    window.location.href = 'http://localhost:3000';
+    window.location.href = "http://localhost:3000";
   };
 
   const navigationItems = [
@@ -44,7 +48,10 @@ const ProductHeader: React.FC = () => {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <button onClick={handleLogoClick} className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity">
+            <button
+              onClick={handleLogoClick}
+              className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity"
+            >
               <div className="w-8 h-8 bg-white rounded-full mr-3 flex items-center justify-center">
                 <span className="bg-white font-bold text-sm">🏎️</span>
               </div>
@@ -71,7 +78,7 @@ const ProductHeader: React.FC = () => {
 
           {/* Cart and CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <button 
+            <button
               onClick={handleCartClick}
               className="relative text-gray-300 hover:text-red-500 transition-colors duration-200"
             >
@@ -101,7 +108,10 @@ const ProductHeader: React.FC = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-3">
-            <button onClick={handleCartClick} className="text-gray-300 hover:text-red-500 transition-colors duration-200 relative">
+            <button
+              onClick={handleCartClick}
+              className="text-gray-300 hover:text-red-500 transition-colors duration-200 relative"
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -169,7 +179,7 @@ const ProductHeader: React.FC = () => {
                 <button className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                   Shop Now
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     handleCartClick();
                     setIsMenuOpen(false);

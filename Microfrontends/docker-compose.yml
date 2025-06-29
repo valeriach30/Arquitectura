@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  # API Server
+  api-server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+    networks:
+      - f1-network
+
+  # Home Microfrontend
+  home-mf:
+    build: ./home
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    depends_on:
+      - api-server
+    networks:
+      - f1-network
+
+  # Product Microfrontend
+  product-mf:
+    build: ./product
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+    depends_on:
+      - api-server
+      - home-mf
+    networks:
+      - f1-network
+
+networks:
+  f1-network:
+    driver: bridge
