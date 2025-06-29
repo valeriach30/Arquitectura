@@ -1,0 +1,122 @@
+import React from "react";
+
+export interface Product {
+  id: string;
+  name: string;
+  driver: string;
+  team: string;
+  category: "Car" | "Merchandise" | "Collectibles" | "Racing Gear";
+  price: number;
+  picture: string;
+  description: string;
+  inStock: boolean;
+  featured: boolean;
+}
+
+interface ProductCardProps {
+  product: Product;
+  onAddToCart?: (product: Product) => void;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case "Car":
+        return "bg-red-100 text-red-800";
+      case "Merchandise":
+        return "bg-blue-100 text-blue-800";
+      case "Collectibles":
+        return "bg-purple-100 text-purple-800";
+      case "Racing Gear":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getTeamColor = (team: string) => {
+    if (team.includes("Red Bull")) return "text-blue-600";
+    if (team.includes("Ferrari")) return "text-red-600";
+    if (team.includes("Mercedes")) return "text-cyan-600";
+    if (team.includes("McLaren")) return "text-orange-600";
+    if (team.includes("Alpine")) return "text-pink-600";
+    return "text-gray-600";
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+      {/* Product Image */}
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={product.picture}
+          alt={product.name}
+          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+        {product.featured && (
+          <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
+            ⭐ FEATURED
+          </div>
+        )}
+        {!product.inStock && (
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <span className="text-white font-bold text-lg">OUT OF STOCK</span>
+          </div>
+        )}
+      </div>
+
+      {/* Product Info */}
+      <div className="p-4">
+        {/* Category & Team */}
+        <div className="flex justify-between items-center mb-2">
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(
+              product.category
+            )}`}
+          >
+            {product.category}
+          </span>
+          <span className={`text-xs font-medium ${getTeamColor(product.team)}`}>
+            {product.team}
+          </span>
+        </div>
+
+        {/* Product Name */}
+        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+          {product.name}
+        </h3>
+
+        {/* Driver */}
+        <p className="text-sm text-gray-600 mb-2 flex items-center">
+          <span className="mr-1">🏎️</span>
+          {product.driver}
+        </p>
+
+        {/* Description */}
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          {product.description}
+        </p>
+
+        {/* Price & Actions */}
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-bold text-gray-900">
+            ${product.price}
+          </div>
+
+          <button
+            onClick={() => onAddToCart && onAddToCart(product)}
+            disabled={!product.inStock}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+              product.inStock
+                ? "bg-red-600 hover:bg-red-700 text-white shadow-md hover:shadow-lg"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            {product.inStock ? "Add to Cart" : "Out of Stock"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;

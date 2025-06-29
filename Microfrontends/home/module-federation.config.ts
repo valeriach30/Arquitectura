@@ -3,6 +3,8 @@ export const mfConfig = {
   exposes: {
     "./Header": "./src/Header.tsx",
     "./Footer": "./src/Footer.tsx",
+    "./ProductCard": "./src/ProductCard.tsx",
+    "./ProductGrid": "./src/ProductGrid.tsx",
     "./styles": "./src/index.css",
   },
   shared: {
