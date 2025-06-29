@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import CartService, { Cart } from "./CartService";
+// @ts-ignore
+import CartService, { Cart } from 'home/CartService';
 
-const Header: React.FC = () => {
+const ProductHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cart, setCart] = useState<Cart>({
-    items: [],
-    totalItems: 0,
-    totalPrice: 0,
-  });
-  const cartService = CartService.getInstance();
+  const [cart, setCart] = useState<Cart>({ items: [], totalItems: 0, totalPrice: 0 });
+  const [cartService] = useState(() => CartService.getInstance());
 
   useEffect(() => {
     // Load initial cart
@@ -24,16 +20,22 @@ const Header: React.FC = () => {
   }, [cartService]);
 
   const handleCartClick = () => {
-    // This function can be removed since we'll use Link directly
+    // Navigate to cart page in home microfrontend
+    window.location.href = 'http://localhost:3000/cart';
+  };
+
+  const handleLogoClick = () => {
+    // Navigate to home page
+    window.location.href = 'http://localhost:3000';
   };
 
   const navigationItems = [
-    { label: "Home", href: "#home" },
-    { label: "Cars & Models", href: "#cars" },
-    { label: "Team Merchandise", href: "#merchandise" },
-    { label: "Collectibles", href: "#collectibles" },
-    { label: "Racing Gear", href: "#gear" },
-    { label: "About", href: "#about" },
+    { label: "Home", href: "http://localhost:3000" },
+    { label: "Cars & Models", href: "http://localhost:3000#cars" },
+    { label: "Team Merchandise", href: "http://localhost:3000#merchandise" },
+    { label: "Collectibles", href: "http://localhost:3000#collectibles" },
+    { label: "Racing Gear", href: "http://localhost:3000#gear" },
+    { label: "About", href: "http://localhost:3000#about" },
   ];
 
   return (
@@ -42,14 +44,14 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
+            <button onClick={handleLogoClick} className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity">
               <div className="w-8 h-8 bg-white rounded-full mr-3 flex items-center justify-center">
                 <span className="bg-white font-bold text-sm">🏎️</span>
               </div>
               <h1 className="text-2xl font-bold text-white">
                 F1<span className="text-red-600">Store</span>
               </h1>
-            </Link>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -69,8 +71,8 @@ const Header: React.FC = () => {
 
           {/* Cart and CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/cart"
+            <button 
+              onClick={handleCartClick}
               className="relative text-gray-300 hover:text-red-500 transition-colors duration-200"
             >
               <svg
@@ -91,7 +93,7 @@ const Header: React.FC = () => {
                   {cart.totalItems}
                 </span>
               )}
-            </Link>
+            </button>
             <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md text-sm font-medium transition-colors duration-200 shadow-lg">
               Shop Now
             </button>
@@ -99,10 +101,7 @@ const Header: React.FC = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-3">
-            <Link
-              to="/cart"
-              className="text-gray-300 hover:text-red-500 transition-colors duration-200 relative"
-            >
+            <button onClick={handleCartClick} className="text-gray-300 hover:text-red-500 transition-colors duration-200 relative">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -121,7 +120,7 @@ const Header: React.FC = () => {
                   {cart.totalItems}
                 </span>
               )}
-            </Link>
+            </button>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-300 hover:text-red-500 focus:outline-none focus:text-red-500"
@@ -170,10 +169,12 @@ const Header: React.FC = () => {
                 <button className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                   Shop Now
                 </button>
-                <Link
-                  to="/cart"
+                <button 
+                  onClick={() => {
+                    handleCartClick();
+                    setIsMenuOpen(false);
+                  }}
                   className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center justify-center"
-                  onClick={() => setIsMenuOpen(false)}
                 >
                   <svg
                     className="w-5 h-5 mr-2"
@@ -189,7 +190,7 @@ const Header: React.FC = () => {
                     />
                   </svg>
                   Carrito ({cart.totalItems})
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -199,4 +200,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default ProductHeader;

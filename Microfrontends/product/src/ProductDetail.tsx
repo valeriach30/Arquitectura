@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+// @ts-ignore
+import CartService from "home/CartService";
 
 export interface Product {
   id: string;
@@ -22,6 +24,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [cartService] = useState(() => CartService.getInstance());
 
   useEffect(() => {
     if (productId) {
@@ -91,12 +94,30 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
 
   const handleAddToCart = () => {
     if (product) {
-      alert(`Added ${quantity} x ${product.name} to cart! 🛒`);
+      try {
+        cartService.addToCart(product, quantity);
+
+        // Show success message
+        const cartInfo = cartService.getCart();
+        alert(
+          `¡${quantity} x ${product.name} agregado al carrito! 🛒\nTotal en carrito: ${cartInfo.totalItems} productos`
+        );
+
+        // Reset quantity to 1 after adding
+        setQuantity(1);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        alert(`Error al agregar al carrito. Intenta de nuevo.`);
+      }
     }
   };
 
   const handleBackToProducts = () => {
     window.location.href = "http://localhost:3000"; // Navigate back to home
+  };
+
+  const handleGoToCart = () => {
+    window.location.href = "http://localhost:3000/cart"; // Navigate to cart page
   };
 
   if (loading) {
@@ -240,34 +261,46 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
 
             {/* Quantity Selector & Add to Cart */}
             {product.inStock && (
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="flex items-center">
-                  <label
-                    htmlFor="quantity"
-                    className="mr-3 text-sm font-medium text-gray-700"
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center">
+                    <label
+                      htmlFor="quantity"
+                      className="mr-3 text-sm font-medium text-gray-700"
+                    >
+                      Quantity:
+                    </label>
+                    <select
+                      id="quantity"
+                      value={quantity}
+                      onChange={(e) => setQuantity(parseInt(e.target.value))}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                        <option key={num} value={num}>
+                          {num}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
-                    Quantity:
-                  </label>
-                  <select
-                    id="quantity"
-                    value={quantity}
-                    onChange={(e) => setQuantity(parseInt(e.target.value))}
-                    className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                      <option key={num} value={num}>
-                        {num}
-                      </option>
-                    ))}
-                  </select>
+                    Add to Cart - ${(product.price * quantity).toFixed(2)}
+                  </button>
                 </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-md hover:shadow-lg"
-                >
-                  Add to Cart - ${(product.price * quantity).toFixed(2)}
-                </button>
+                {/* Go to Cart Button */}
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleGoToCart}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-6 py-2 rounded-lg font-medium transition-colors duration-200 border border-gray-300"
+                  >
+                    🛒 Ver Carrito
+                  </button>
+                </div>
               </div>
             )}
 

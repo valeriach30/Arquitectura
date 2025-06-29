@@ -51,8 +51,9 @@ const ProductGrid: React.FC = () => {
   };
 
   const handleAddToCart = (product: Product) => {
-    // For now, just show an alert. You can integrate with a cart system later
-    alert(`Added ${product.name} to cart! 🛒`);
+    // This is now handled by the ProductCard component itself
+    // But we can show a notification here
+    alert(`¡${product.name} agregado al carrito! 🛒`);
   };
 
   const handleFilterChange = (newFilters: FilterState) => {

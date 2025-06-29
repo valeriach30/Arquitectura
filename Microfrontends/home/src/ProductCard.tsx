@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CartService from "./CartService";
 
 export interface Product {
   id: string;
@@ -24,6 +25,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   onViewDetails,
 }) => {
+  const cartService = CartService.getInstance();
+
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "Car":
@@ -59,6 +62,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
     } else {
       // Default navigation to product microfrontend
       window.open(`http://localhost:3002?id=${product.id}`, "_blank");
+    }
+  };
+
+  const handleAddToCart = () => {
+    cartService.addToCart(product, 1);
+    // Still call the optional onAddToCart callback if provided
+    if (onAddToCart) {
+      onAddToCart(product);
     }
   };
   return (
@@ -137,7 +148,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onAddToCart && onAddToCart(product);
+                handleAddToCart();
               }}
               disabled={!product.inStock}
               className={`flex-1 px-3 py-2 rounded-lg font-medium transition-colors duration-200 ${
