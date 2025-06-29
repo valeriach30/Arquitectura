@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./index.css"; // Import styles to ensure they're included
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

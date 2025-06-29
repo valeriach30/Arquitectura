@@ -3,6 +3,7 @@ export const mfConfig = {
   exposes: {
     "./Header": "./src/Header.tsx",
     "./Footer": "./src/Footer.tsx",
+    "./styles": "./src/index.css",
   },
   shared: {
     react: { singleton: true },

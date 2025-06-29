@@ -3,6 +3,9 @@ import React, { Suspense } from "react";
 
 import "./index.css";
 
+// Import shared styles from home microfrontend
+import "home/styles";
+
 // Import shared components from home microfrontend
 const Header = React.lazy(() => import("home/Header"));
 const Footer = React.lazy(() => import("home/Footer"));

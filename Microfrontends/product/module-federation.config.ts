@@ -7,6 +7,7 @@ export const mfConfig = {
   shared: {
     react: { singleton: true },
     "react-dom": { singleton: true },
+    // Share CSS related dependencies if any
   },
   dts: false, // Disable automatic type generation
 };
