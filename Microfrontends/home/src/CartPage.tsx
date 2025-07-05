@@ -11,7 +11,8 @@ const CartPage: React.FC = () => {
 
   useEffect(() => {
     // Load initial cart
-    setCart(cartService.getCart());
+    const initialCart = cartService.getCart();
+    setCart(initialCart);
 
     // Subscribe to cart changes
     const unsubscribe = cartService.subscribe((updatedCart: Cart) => {

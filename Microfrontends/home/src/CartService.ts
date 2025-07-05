@@ -48,7 +48,7 @@ class CartService {
 
   // Notify all listeners of cart changes
   private notifyListeners() {
-    this.listeners.forEach((listener) => listener(this.cart));
+    this.listeners.forEach((listener) => listener({ ...this.cart }));
   }
 
   // Load cart from localStorage
@@ -57,6 +57,8 @@ class CartService {
       const savedCart = localStorage.getItem("f1-cart");
       if (savedCart) {
         this.cart = JSON.parse(savedCart);
+        // Recalculate totals in case of data inconsistency
+        this.calculateTotals();
       }
     } catch (error) {
       console.error("Error loading cart from localStorage:", error);
@@ -116,10 +118,16 @@ class CartService {
 
   // Remove product from cart
   removeFromCart(productId: string): void {
+    const initialLength = this.cart.items.length;
     this.cart.items = this.cart.items.filter((item) => item.id !== productId);
-    this.calculateTotals();
-    this.saveCart();
-    this.notifyListeners();
+
+    if (this.cart.items.length < initialLength) {
+      this.calculateTotals();
+      this.saveCart();
+      this.notifyListeners();
+    } else {
+      console.error("Product not found in cart:", productId);
+    }
   }
 
   // Update quantity of item in cart
@@ -136,6 +144,8 @@ class CartService {
         this.saveCart();
         this.notifyListeners();
       }
+    } else {
+      console.error("Product not found in cart:", productId);
     }
   }
 
